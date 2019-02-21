@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+
+	<appender name="FILE"
+		class="ch.qos.logback.core.rolling.RollingFileAppender">
+		<file>logs/my-json-logFile.log</file>
+		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+			<!-- daily rollover -->
+			<fileNamePattern>logs/my-json-logFile.%d.log</fileNamePattern>
+			
+			<!-- 最多保持30天的历史日志数据   如果30天内的数据大于3GB将会按时间清除老日志文件 -->
+			<maxHistory>30</maxHistory>
+			<totalSizeCap>3GB</totalSizeCap>
+
+		</rollingPolicy>
+		
+		<encoder class="net.logstash.logback.encoder.LoggingEventCompositeJsonEncoder">
+            <charset>utf8</charset>
+             <providers>
+                <timestamp>
+                    <timeZone>UTC</timeZone>
+                </timestamp>
+                <pattern>
+                    <pattern>
+                        {
+                          "severity": "%level",
+                          "service": "${springAppName:-}",
+                          "trace": "%X{X-B3-TraceId:-}",
+                          "span": "%X{X-B3-SpanId:-}",
+                          "exportable": "%X{X-Span-Export:-}",
+                          "pid": "${PID:-}",
+                          "thread": "%thread",
+                          "class": "%logger{40}",
+                          "rest": "%message"
+                        }
+                    </pattern>
+                </pattern>
+            </providers>
+        </encoder>
+	</appender>
+	
+	
+	<appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+        <!-- encoders are assigned the type ch.qos.logback.classic.encoder.PatternLayoutEncoder 
+            by default -->
+<!--         <encoder> -->
+<!--             <pattern> -->
+<!--             	%date [%thread] [%level] [%logger:%line] - %msg%n -->
+<!--             </pattern> -->
+<!--         </encoder> -->
+        <encoder class="net.logstash.logback.encoder.LoggingEventCompositeJsonEncoder">
+            <charset>utf8</charset>
+             <providers>
+                <timestamp>
+                    <timeZone>UTC</timeZone>
+                </timestamp>
+                <pattern>
+                    <pattern>
+                        {
+                          "severity": "%level",
+                          "service": "${springAppName:-}",
+                          "trace": "%X{X-B3-TraceId:-}",
+                          "span": "%X{X-B3-SpanId:-}",
+                          "exportable": "%X{X-Span-Export:-}",
+                          "pid": "${PID:-}",
+                          "thread": "%thread",
+                          "class": "%logger{40}",
+                          "rest": "%message"
+                        }
+                    </pattern>
+                </pattern>
+            </providers>
+        </encoder>
+    </appender>
+
+	<root level="debug">
+		<appender-ref ref="FILE" />
+		<appender-ref ref="STDOUT" />
+	</root>
+
+</configuration>

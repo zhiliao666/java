@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+
+	<appender name="FILE"
+		class="ch.qos.logback.core.rolling.RollingFileAppender">
+		<file>logs/my-win-logFile.log</file>
+		
+		<!-- 日志回滚备份策略  这里最多保留3个文件，文件名也就是通过配置%i从 minIndex到maxIndex之间-->
+		<rollingPolicy class="ch.qos.logback.core.rolling.FixedWindowRollingPolicy">
+			<fileNamePattern>logs/my-win-logFile.%i.log.zip</fileNamePattern>
+			<minIndex>1</minIndex>
+			<maxIndex>3</maxIndex>
+		</rollingPolicy>
+		
+		
+		<triggeringPolicy class="ch.qos.logback.core.rolling.SizeBasedTriggeringPolicy">
+			<!-- 日志文件回滚大小  即超过1Kb就回滚 -->
+			<maxFileSize>1KB</maxFileSize>
+		</triggeringPolicy>
+
+		<encoder>
+			<pattern>
+				%date [%thread] [%level] [%logger:%line] - %msg%n
+			</pattern>
+		</encoder>
+	</appender>
+
+	<root level="debug">
+		<appender-ref ref="FILE" />
+	</root>
+
+</configuration>

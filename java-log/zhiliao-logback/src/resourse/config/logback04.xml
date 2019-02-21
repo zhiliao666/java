@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+
+	<appender name="FILE"
+		class="ch.qos.logback.core.rolling.RollingFileAppender">
+		<file>logs/my-logFile.log</file>
+		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+			<!-- daily rollover -->
+			<!-- 
+				logs/my-logFile.%d.log 根据时间回滚  默认的格式是根据天回滚 即和logs/my-logFile.%d{yyyy-MM-dd}.log等同
+				logs/my-logFile.%d{yyyy-MM}.log 月回滚 每月一个文件
+				logs/my-logFile.%d{yyyy-ww}.log 周回滚 每周一个文件
+				logs/my-logFile.%d{yyyy-MM-dd_HH}.log 小时回滚 每小时一个文件
+				
+				logs/%d{yyyy-MM}/my-logFile.%d.log 每月一个文件夹 按天回滚
+				
+			另外：回滚日志支持.gz和.zip压缩回滚日志，具体使用只需后缀给成对应的就可以 如下：
+				logs/my-logFile.%d.zip 按天压缩回滚日志
+				
+			 -->
+			<fileNamePattern>logs/my-logFile.%d{yyyy-MM-dd.hhmmss}.log</fileNamePattern>
+
+			<!-- 最多保持30天的历史日志数据   如果30天内的数据大于3GB将会按时间清除老日志文件 -->
+			<maxHistory>30</maxHistory>
+			<totalSizeCap>3GB</totalSizeCap>
+
+		</rollingPolicy>
+
+		<encoder>
+			<pattern>
+				%date [%thread] [%level] [%logger:%line] - %msg%n
+			</pattern>
+		</encoder>
+	</appender>
+
+
+	<appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+		<!-- encoders are assigned the type ch.qos.logback.classic.encoder.PatternLayoutEncoder 
+			by default -->
+		<encoder>
+			<pattern>
+				%date [%thread] [%level] [%logger:%line] - %msg%n
+			</pattern>
+		</encoder>
+	</appender>
+
+	<root level="debug">
+		<appender-ref ref="FILE" />
+		<appender-ref ref="STDOUT" />
+	</root>
+
+</configuration>

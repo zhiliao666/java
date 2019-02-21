@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+	
+	<property name="USER_HOME" value="user-path/" />
+	
+	<appender name="FILE" class="ch.qos.logback.core.FileAppender">
+		<!-- 会优先在USER_HOME目录下生成对应的日志文件，如果USER_HOME属性不存在则会在logs目录下生成日志文件,可以注释USER_HOME property运行看效果 -->
+		<file>${USER_HOME:-logs/}my-async.log</file>
+		<encoder>
+			<pattern>%date %level [%thread] %logger{36} [%file :%line] %msg%n</pattern>
+		</encoder>
+	</appender>
+	
+	<appender name="ASYNC" class="ch.qos.logback.classic.AsyncAppender">
+		<!-- 默认情况下，当阻塞队列的剩余容量为20%时，它将删除级别跟踪、调试和信息事件，只保留级别警告和错误事件。要保留所有事件，请将discardingThreshold设置为0 -->
+		<discardingThreshold>0</discardingThreshold>
+		<!-- 队列大小 默认大小为256 -->
+        <queueSize>10</queueSize>
+        <!-- 程序stop的时候最大的等待刷新日志时间，超过时间的日志未刷新完将会被丢弃 -->
+        <maxFlushTime>1000</maxFlushTime>
+        <!-- false(默认值)，appender将阻塞向整个队列追加，而不是丢失消息。如果设置为true, appender就会删除消息，而不会阻塞应用程序 -->
+        <neverBlock>false</neverBlock>
+	    <appender-ref ref="FILE" />
+    </appender>
+
+	<root level="debug">
+		<appender-ref ref="FILE" />
+	</root>
+
+</configuration>

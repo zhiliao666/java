@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--  
+<configuration debug="true">-->
+<configuration scan="true" scanPeriod="10 seconds" >
+
+	<property name="USER_HOME" value="logs/" />
+	<HOSTNAME></HOSTNAME>
+	<contextName>myAppName</contextName>
+<!-- 	<statusListener class="ch.qos.logback.core.status.OnConsoleStatusListener" /> -->
+	
+	 <appender name="FILE" class="ch.qos.logback.core.FileAppender">
+	    <file>${USER_HOME:-logs/}foo.log</file>
+	    <encoder>
+	      <pattern>%date %contextName %level [%thread] %logger{10} [%file : %line] %msg%n</pattern>
+	    </encoder>
+	  </appender>
+
+    <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+        <!-- encoders are assigned the type ch.qos.logback.classic.encoder.PatternLayoutEncoder 
+            by default -->
+        <encoder>
+            <pattern>%d{YYYY-MM-dd HH:mm:ss.SSS} %contextName [%thread] %-5level %logger{36} - %msg%n
+            </pattern>
+        </encoder>
+    </appender>
+	
+	<timestamp key="bySecond" datePattern="yyyyMMdd'T'HHmm" />
+
+	<appender name="FILE2" class="ch.qos.logback.core.FileAppender">
+		use the previously created timestamp to create a uniquely named log 
+<!-- 			file -->
+		<file>log-${bySecond}.txt</file>
+		<encoder>
+			<pattern>%logger{35} - %msg%n</pattern>
+		</encoder>
+	</appender>
+
+	<logger name="com.zhiliao.Application" additivity="false">
+	    <appender-ref ref="FILE" />
+    </logger>
+    
+    <root level="debug">
+        <appender-ref ref="STDOUT" />
+        <appender-ref ref="FILE" />
+    </root>
+</configuration>

@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+	
+	<property name="USER_HOME" value="user-path/" />
+	
+	<appender name="FILE" class="ch.qos.logback.core.FileAppender">
+		<!-- 会优先在USER_HOME目录下生成对应的日志文件，如果USER_HOME属性不存在则会在logs目录下生成日志文件,可以注释USER_HOME property运行看效果 -->
+		<file>${USER_HOME:-logs/}my-zhiliao.log</file>
+		<encoder>
+			<pattern>%date %level [%thread] %logger{36} [%file :%line] %msg%n</pattern>
+		</encoder>
+	</appender>
+	
+	<appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+        <!-- encoders are assigned the type ch.qos.logback.classic.encoder.PatternLayoutEncoder 
+            by default -->
+        <encoder>
+            <pattern>
+            	%date [%thread] [%level] [%logger:%line] - %msg%n
+            </pattern>
+        </encoder>
+    </appender>
+
+	<root level="debug">
+		<appender-ref ref="FILE" />
+		<appender-ref ref="STDOUT" />
+	</root>
+
+</configuration>

@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+
+	<appender name="FILE"
+		class="ch.qos.logback.core.rolling.RollingFileAppender">
+		<file>logs/my-logFile.log</file>
+		<rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
+			<!-- daily rollover -->
+			<!-- 
+				文件回滚格式类似上个例子配置TimeBasedRollingPolicy
+				另如果文件超过设置大小会回滚再生成对应的文件，如下：
+				logs/my-logFile.2018-07-24.0.log
+				logs/my-logFile.2018-07-24.1.log
+			 -->
+			<fileNamePattern>logs/my-logFile.%d{yyyy-MM-dd.hhmm}.%i.log</fileNamePattern>
+			
+			<!-- 最大文件大小 -->
+			<maxFileSize>200MB</maxFileSize>  
+
+			<!-- 最多保持30天的历史日志数据   如果30天内的数据大于3GB将会按时间清除老日志文件 -->
+			<maxHistory>30</maxHistory>
+			<totalSizeCap>3GB</totalSizeCap>
+
+		</rollingPolicy>
+
+		<encoder>
+			<pattern>
+				%date [%thread] [%level] [%logger:%line] - %msg%n
+			</pattern>
+		</encoder>
+	</appender>
+
+	<root level="debug">
+		<appender-ref ref="FILE" />
+	</root>
+
+</configuration>

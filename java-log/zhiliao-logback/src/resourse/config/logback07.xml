@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+
+	
+	<appender name="SOCKET" class="ch.qos.logback.classic.net.SocketAppender">
+	    <remoteHost>localhost</remoteHost>
+	    <port>10086</port>
+	    <reconnectionDelay>10000</reconnectionDelay>
+	    <includeCallerData>false</includeCallerData>
+	    
+	    <encoder>
+			<pattern>
+				%date [%thread] [%level] [%logger:%line] - %msg%n
+			</pattern>
+		</encoder>
+	</appender>
+
+	<root level="debug">
+		<appender-ref ref="SOCKET" />
+	</root>
+
+</configuration>

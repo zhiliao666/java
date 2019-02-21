@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration debug="true">
+	
+	<appender name="EMAIL" class="ch.qos.logback.classic.net.SMTPAppender">
+	    <smtpHost>smtp.ufotosoft.com</smtpHost>
+	    <smtpPort>465</smtpPort>
+	    <SSL>true</SSL>
+	    <from>monitor@ufotosoft.com</from>
+	    <username>monitor@ufotosoft.com</username>
+	    <password>Aa123456</password>
+	    <!-- 邮件接收者 多个接收者逗号分隔 -->
+	    <to>zhangqh@ufotosoft.com</to>
+	    <!-- 邮件主题 -->
+	    <subject>TESTING: %logger{20} - %m</subject>
+	    <!-- 是否异步发送 -->
+	    <asynchronousSending>true</asynchronousSending>
+	    <!-- 默认值是false 启用异步发送的话需要设置为true -->
+	    <includeCallerData>true</includeCallerData>
+	    <!-- 超过多少次发送邮件 -->
+<!-- 	    <evaluator class="com.zhiliao.demo.CounterBasedEvaluator"></evaluator> -->
+	    
+<!-- 	    基于标记发送邮件 -->
+	    <evaluator class="ch.qos.logback.classic.boolex.OnMarkerEvaluator">
+	      <marker>NOTIFY_ADMIN</marker>
+<!-- 	      you specify add as many markers as you want -->
+	      <marker>TRANSACTION_FAILURE</marker>
+	    </evaluator>
+	    
+	    <layout class="ch.qos.logback.classic.PatternLayout">
+				<pattern>%date [%thread] [%level] [%logger:%line] - %msg%n</pattern>
+	    </layout>       
+    </appender>
+
+	<root level="DEBUG">
+	    <appender-ref ref="EMAIL" />
+	  </root>
+
+</configuration>
